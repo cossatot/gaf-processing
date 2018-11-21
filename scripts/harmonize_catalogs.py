@@ -88,6 +88,12 @@ mdf = filter_faults_inside_other_dataset(mdf, 'Macgregor_AfricaFaults',
                                          'SHARE',
                                          inside_type='intersects')
 
+print('Filtering EOS faults that cross Phil faults')
+mdf = filter_faults_crossing_other_faults(mdf, 'EOS_SE_Asia',
+                                          'philippines')
+
+print('Filtering Bird faults that cross EOS faults')
+mdf = filter_faults_crossing_other_faults(mdf, 'Bird 2003', 'EOS_SE_Asia')
 
 n_faults_final = len(mdf)
 n_faults_removed = n_faults_init - n_faults_final
