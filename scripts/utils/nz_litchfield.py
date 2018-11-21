@@ -34,3 +34,15 @@ def get_dip(row):
 
 def get_slip_rate(row):
     return format_tup(row.SR_Best, row.SR_Min, row.SR_Max)
+
+
+def slip_type_changes(nz_df):
+
+    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Wellington'), 
+              'Sense_Dom'] = 'Subduction Thrust'
+    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Hawke Bay'), 
+              'Sense_Dom'] = 'Subduction Thrust'
+    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Raukumara'), 
+              'Sense_Dom'] = 'Subduction Thrust'
+
+
