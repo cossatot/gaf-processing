@@ -1,5 +1,8 @@
 import numpy as np
 
+from .data_checks import rake_to_aki_richards
+
+
 def process_emme(emme_df):
     """
     Master processing function for the Earthquake Model of the Middle East
@@ -40,10 +43,10 @@ def rake_to_tup(row):
     Converts the `rakemin` and `rakemax` data into a tuple
     with the mean rake as the mid range value.
     """
-    rkmin = row['RAKEMIN']
-    rkmax = row['RAKEMAX']
+    rkmin = rake_to_aki_richards(row['RAKEMIN'])
+    rkmax = rake_to_aki_richards(row['RAKEMAX'])
     rkav = np.mean((rkmin, rkmax))
-    
+
     return '({},{},{})'.format(int(rkav), rkmin, rkmax)
 
 
@@ -55,7 +58,7 @@ def dip_to_tup(row):
     dpmin = row['DIPMIN']
     dpmax = row['DIPMAX']
     dpav = np.mean((dpmin, dpmax))
-    
+
     return '({:.1f},{},{})'.format(dpav, dpmin, dpmax)
 
 

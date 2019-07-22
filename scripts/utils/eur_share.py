@@ -1,6 +1,8 @@
 from ast import literal_eval
 import numpy as np
 
+from .data_checks import rake_to_aki_richards
+
 
 def process_eur_share(eur_df):
     """
@@ -24,10 +26,10 @@ def eur_rake_to_tup(row):
     Converts the `rakemin` and `rakemax` data into a tuple
     with the mean rake as the mid range value.
     """
-    rkmin = row['rakemin']
-    rkmax = row['rakemax']
+    rkmin = rake_to_aki_richards(row['rakemin'])
+    rkmax = rake_to_aki_richards(row['rakemax'])
     rkav = np.mean((rkmin, rkmax))
-    
+
     return '({},{},{})'.format(int(rkav), rkmin, rkmax)
 
 
@@ -39,7 +41,7 @@ def eur_dip_to_tup(row):
     dpmin = row['dipmin']
     dpmax = row['dipmax']
     dpav = np.mean((dpmin, dpmax))
-    
+
     return '({:.1f},{},{})'.format(dpav, dpmin, dpmax)
 
 
@@ -67,7 +69,7 @@ def get_slip_type_from_rake(row):
     if rake > 180:
         rake -= 360
 
-    if  -22.5 <= rake < 22.5:
+    if -22.5 <= rake < 22.5:
         slip_type = 'Sinistral'
     elif 22.5 <= rake < 67.5:
         slip_type = 'Sinistral-Reverse'

@@ -73,7 +73,7 @@ def bird_rake_parse(row):
 
 
 def bird_strike_slip_rate(row):
-    return '({},,)'.format(np.abs(row.VELOCITYRI))
+    return '({},,)'.format(row.VELOCITYRI)
 
 def bird_short_rate(row):
     return '({},,)'.format(-row.VELOCITYDI)

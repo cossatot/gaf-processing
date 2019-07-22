@@ -1,3 +1,5 @@
+from .data_checks import rake_to_aki_richards
+
 
 def process_nz_litchfield(nz_df):
 
@@ -25,7 +27,10 @@ def format_tup(best, mini, maxi):
 
 
 def get_rake(row):
-    return format_tup(row.Rake_Best, row.Rake_Min, row.Rake_Max)
+    return format_tup(*[
+        rake_to_aki_richards(rake)
+        for rake in (row.Rake_Best, row.Rake_Min, row.Rake_Max)
+    ])
 
 
 def get_dip(row):
@@ -38,11 +43,9 @@ def get_slip_rate(row):
 
 def slip_type_changes(nz_df):
 
-    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Wellington'), 
-              'Sense_Dom'] = 'Subduction Thrust'
-    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Hawke Bay'), 
-              'Sense_Dom'] = 'Subduction Thrust'
-    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Raukumara'), 
-              'Sense_Dom'] = 'Subduction Thrust'
-
-
+    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Wellington'
+               ), 'Sense_Dom'] = 'Subduction Thrust'
+    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Hawke Bay'
+               ), 'Sense_Dom'] = 'Subduction Thrust'
+    nz_df.loc[(nz_df['FZ_Name'] == 'Hikurangi Raukumara'
+               ), 'Sense_Dom'] = 'Subduction Thrust'

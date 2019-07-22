@@ -8,6 +8,8 @@ import pandas as pd
 import geopandas as gpd
 
 # import catalog processing functions for each regional catalog
+from .aus import process_aus
+from .ucerf3 import process_ucerf3
 from .ata import process_ata
 from .e_africa import process_e_africa
 from .emme import process_emme
@@ -26,6 +28,8 @@ from .gfe import process_gfe
 # This makes a dictionary of the imported processing master functions above
 # to be called by the string version of the function
 fn_dict = {}
+fn_dict['process_aus'] = process_aus
+fn_dict['process_ucerf3'] = process_ucerf3
 fn_dict['process_ata'] = process_ata
 fn_dict['process_e_africa'] = process_e_africa
 fn_dict['process_emme'] = process_emme
@@ -42,7 +46,9 @@ fn_dict['process_eos_se_asia'] = process_eos_se_asia
 fn_dict['process_gfe'] = process_gfe
 
 
-def merge_regional_df_into_master(regional_df, master_df, merge_dict,
+def merge_regional_df_into_master(regional_df,
+                                  master_df,
+                                  merge_dict,
                                   catalog_name=None):
     """
     Merge a DataFrame of regional faults into the master catalog, using
@@ -57,11 +63,12 @@ def merge_regional_df_into_master(regional_df, master_df, merge_dict,
 
     merge_dict['catalog_id'] = 'catalog_id'
 
-    merge_gen = (pd.Series({k:row[v] for k, v in merge_dict.items()})
+    merge_gen = (pd.Series({k: row[v]
+                            for k, v in merge_dict.items()})
                  for i, row in regional_df.iterrows())
     new_df = pd.concat(merge_gen, axis=1).T
     new_df['catalog_name'] = catalog_name
-    
+
     return pd.concat((master_df, new_df), axis=0, ignore_index=True)
 
 
@@ -117,16 +124,17 @@ def process_catalog(catalog_name, cfg_obj, header_dict, master_df):
         os.remove('./tmp/temp.geojson')
         os.rmdir('./tmp')
 
-
     if 'extra_processing' in cfg_d:
         cat_df = fn_dict[cfg_d['extra_processing']](cat_df)
 
-    cat_df = make_catalog_id(cat_df, abbrev, 
+    cat_df = make_catalog_id(cat_df, abbrev,
                              header_dict[cfg_d['header_match_key']])
 
-    master_df = merge_regional_df_into_master(cat_df, master_df,
-                                        header_dict[cfg_d['header_match_key']],
-                                        catalog_name=cfg_d['catalog_name'])
+    master_df = merge_regional_df_into_master(
+        cat_df,
+        master_df,
+        header_dict[cfg_d['header_match_key']],
+        catalog_name=cfg_d['catalog_name'])
 
     return master_df
 
@@ -142,7 +150,7 @@ def make_catalog_id(cat_df, abbrev, header_dict):
     id_list = ['{}_{}'.format(abbrev, i) for i in _id]
 
     cat_df['catalog_id'] = id_list
-    
+
     return cat_df
 
 

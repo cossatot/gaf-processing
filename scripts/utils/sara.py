@@ -34,22 +34,30 @@ def lsd(row):
 def _dips_parse(dip, dips):
     
     dip_tup = '({},{},{})'
-    
-    if '<' in dips:
+
+    if dips is not None:
+       if '<' in dips:
+           dip_min = ''
+           dip_max = dips.split('<')[1]
+       elif '>' in dips:
+           dip_min = dips.split('>')[0]
+           dip_max = ''
+       elif '-' in dips:
+           dip_min, dip_max = dips.split('-')
+       elif 'a' in dips:
+           dip_min, dip_max = dips.split('a')
+       else:
+           if np.isscalar(leval(dips)):
+               dip = dips
+               dip_min = ''
+               dip_max = ''
+
+    elif dip is not None:
         dip_min = ''
-        dip_max = dips.split('<')[1]
-    elif '>' in dips:
-        dip_min = dips.split('>')[0]
         dip_max = ''
-    elif '-' in dips:
-        dip_min, dip_max = dips.split('-')
-    elif 'a' in dips:
-        dip_min, dip_max = dips.split('a')
+
     else:
-        if np.isscalar(leval(dips)):
-            dip = dips
-            dip_min = ''
-            dip_max = ''
+        return ''
         
     return dip_tup.format(dip, dip_min, dip_max)
     
@@ -62,21 +70,29 @@ def _srs_parse(sr, srs):
     
     sr_tup = '({},{},{})'
     
-    if '<' in srs:
-        sr_min = ''
-        sr_max = srs.split('<')[1]
-    elif '>' in srs:
-        sr_min = srs.split('>')[0]
-        sr_max = ''
-    elif '-' in srs:
-        sr_min, sr_max = srs.split('-')
-    elif 'a' in srs:
-        sr_min, sr_max = srs.split('a')
-    else:
-        if np.isscalar(leval(srs)):
-            sr = srs
+    if srs is not None:
+        if '<' in srs:
             sr_min = ''
+            sr_max = srs.split('<')[1]
+        elif '>' in srs:
+            sr_min = srs.split('>')[0]
             sr_max = ''
+        elif '-' in srs:
+            sr_min, sr_max = srs.split('-')
+        elif 'a' in srs:
+            sr_min, sr_max = srs.split('a')
+        else:
+            if np.isscalar(leval(srs)):
+                sr = srs
+                sr_min = ''
+                sr_max = ''
+
+    elif sr is not None:
+        sr_min = ''
+        sr_max = ''
+
+    else:
+        return ''
         
     return sr_tup.format(sr, sr_min, sr_max)
     
@@ -101,3 +117,22 @@ sar_slip_type = {'reverse': 'Reverse' ,
  'strikeslip': 'Strike-Slip',
  'strikeslip-reverse': 'Strike-Slip-Reverse',
  'strikeslip-normal':'Strike-Slip-Normal' }
+
+dip_slip_dict = {
+ 'reverse': 25.,
+ 'dextral': 90.,
+ 'normal': 50.,
+ 'sinistral-reverse': 45.,
+ 'dextral-normal': 65.,
+ 'None': '',
+ 'sinistral': 90.,
+ 'dextral-reverse': 45.,
+ 'normal-sinistral': 65.,
+ 'normal-dextral': 65.,
+ 'reverse-sinistral': 45.,
+ 'reverse-dextral': 45.,
+ 'strikeslip': 90.,
+ 'strikeslip-reverse': 45.,
+ 'strikeslip-normal': 65.,
+ None: ''}
+

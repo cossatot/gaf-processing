@@ -1,11 +1,9 @@
 import os
 import geopandas as gpd
 
-
 from utils.filtering import (drop_bad_geometries,
                              filter_faults_inside_other_dataset,
                              filter_faults_crossing_other_faults)
-
 
 master_df = gpd.read_file('../outputs/geojson/gem_active_faults.geojson')
 mdf_write_path = '../outputs/geojson/gem_active_faults_harmonized.geojson'
@@ -18,11 +16,20 @@ n_faults_init = len(mdf)
 print('Dropping faults with bad geometries...')
 mdf = drop_bad_geometries(mdf, verbose=True)
 
+# filtering doesn't work, so removing CA faults from Hazfaults during assembly
+#print('Filtering HAZFAULTS that cross UCERF faults...')
+#mdf = filter_faults_crossing_other_faults(mdf, 'USGS Hazfaults 2014', 'UCERF3')
+
+print('Filtering GEM faults with AUS overlap...')
+mdf = filter_faults_inside_other_dataset(mdf, 'GEM Faulted Earth', 'AUS_FSD')
+
 print('Filtering SHARE faults with EMME overlap...')
 mdf = filter_faults_inside_other_dataset(mdf, 'SHARE', 'EMME')
 
 print('Filtering SHARE faults with N_Africa overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'SHARE', 'GEM_N_Africa',
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'SHARE',
+                                         'GEM_N_Africa',
                                          inside_type='intersects')
 
 #print('Filtering Thailand faults that cross Myanmar faults...')
@@ -50,12 +57,14 @@ mdf = filter_faults_crossing_other_faults(mdf, 'Bird 2003', 'SHARE')
 #mdf = filter_faults_crossing_other_faults(mdf, 'Bird 2003', 'EOS_SE_Asia')
 
 print('Filtering Bird faults with CCARA overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'Bird 2003',
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'Bird 2003',
                                          'GEM_Central_Am_Carib',
                                          inside_type='intersects')
 
 print('Filtering Bird faults with ATA overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'Bird 2003',
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'Bird 2003',
                                          'Active Tectonics of the Andes',
                                          inside_type='intersects')
 
@@ -64,11 +73,15 @@ mdf = filter_faults_inside_other_dataset(mdf, 'Bird 2003',
 #                                          'Active Tectonics of the Andes')
 
 print('Filtering Bird faults with SARA overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'Bird 2003', 'SARA',
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'Bird 2003',
+                                         'SARA',
                                          inside_type='intersects')
 
 print('Filtering Bird faults with EMME overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'Bird 2003', 'EMME',
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'Bird 2003',
+                                         'EMME',
                                          inside_type='intersects')
 
 print('Filtering ATA faults that cross SARA faults...')
@@ -76,21 +89,23 @@ mdf = filter_faults_crossing_other_faults(mdf, 'Active Tectonics of the Andes',
                                           'SARA')
 
 print('Filtering US faults that cross Mexico...')
-mdf = filter_faults_crossing_other_faults(mdf, 'USGS Hazfaults 2014', 
+mdf = filter_faults_crossing_other_faults(mdf, 'USGS Hazfaults 2014',
                                           'Villegas Mexico')
 
 print('Filtering Africa faults with EMME overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'Macgregor_AfricaFaults', 'EMME',
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'Macgregor_AfricaFaults',
+                                         'EMME',
                                          inside_type='intersects')
 
 print('Filtering Africa faults with SHARE overlap...')
-mdf = filter_faults_inside_other_dataset(mdf, 'Macgregor_AfricaFaults', 
+mdf = filter_faults_inside_other_dataset(mdf,
+                                         'Macgregor_AfricaFaults',
                                          'SHARE',
                                          inside_type='intersects')
 
 print('Filtering EOS faults that cross Phil faults')
-mdf = filter_faults_crossing_other_faults(mdf, 'EOS_SE_Asia',
-                                          'philippines')
+mdf = filter_faults_crossing_other_faults(mdf, 'EOS_SE_Asia', 'philippines')
 
 print('Filtering Bird faults that cross EOS faults')
 mdf = filter_faults_crossing_other_faults(mdf, 'Bird 2003', 'EOS_SE_Asia')
