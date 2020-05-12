@@ -414,9 +414,9 @@ slip_types = [
     'Reverse', 'Reverse-Dextral', 'Dextral-Reverse', 'Dextral',
     'Dextral-Normal', 'Normal-Dextral', 'Normal', 'Normal-Sinistral',
     'Sinistral-Normal', 'Sinistral', 'Sinistral-Reverse', 'Reverse-Sinistral',
-    'Subduction Thrust', 'Spreading Ridge', 'Strike-Slip',
+    'Subduction_Thrust', 'Spreading_Ridge', 'Strike-Slip',
     'Reverse-Strike-Slip', 'Normal-Strike-Slip', 'Anticline', 'Syncline',
-    'Dextral Transform', 'Sinistral Transform'
+    'Dextral_Transform', 'Sinistral_Transform'
 ]
 
 
