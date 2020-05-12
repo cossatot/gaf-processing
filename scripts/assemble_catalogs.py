@@ -6,16 +6,15 @@ import pandas as pd
 import geopandas as gpd
 import logging
 
-
 from utils import catalog_conversions as cc
 from utils.data_checks import check_data
 
-
 logfile = './data_check.log'
-logging.basicConfig(filename=logfile,
-                   level=logging.INFO,
-                   filemode='w',
-                   )
+logging.basicConfig(
+    filename=logfile,
+    level=logging.INFO,
+    filemode='w',
+)
 
 # import empty DF for the master database
 master_df = pd.read_csv('../master_df_schema.csv', index_col=1)
@@ -36,9 +35,9 @@ catalog_list = cc.get_catalogs_from_config(cfg)
 for catalog in catalog_list:
     if catalog in cfg.sections():
         print('processing {}'.format(catalog))
-        master_df = cc.process_catalog(catalog, cfg, header_cfg, master_df) 
+        master_df = cc.process_catalog(catalog, cfg, header_cfg, master_df)
 
-master_df = gpd.GeoDataFrame(master_df) # convert to GeoPandas GeoDataFrame
+master_df = gpd.GeoDataFrame(master_df)  # convert to GeoPandas GeoDataFrame
 
 print('checking data')
 

@@ -499,7 +499,7 @@ def check_strike_slip_rate(val, accept_none=True):
     return check_triple(val, accept_none)
 
 
-def check_vert_slip_rate(val, accept_none=True):
+def check_vert_sep_rate(val, accept_none=True):
     return check_triple(val, accept_none)
 
 
@@ -526,7 +526,7 @@ check_val_funcs = {
     'shortening_rate': check_shortening_rate,
     'slip_type': check_slip_type,
     'strike_slip_rate': check_strike_slip_rate,
-    'vert_slip_rate': check_vert_slip_rate,
+    'vert_sep_rate': check_vert_sep_rate,
 }
 
 change_val_funcs = {
@@ -551,7 +551,7 @@ change_val_funcs = {
     'shortening_rate': change_slip_rate,
     'slip_type': change_slip_type,
     'strike_slip_rate': change_slip_rate,
-    'vert_slip_rate': change_slip_rate,
+    'vert_sep_rate': change_slip_rate,
 }
 
 
