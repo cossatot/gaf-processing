@@ -24,10 +24,12 @@ from .bird_pb import process_bird_pb
 from .nz_litchfield import process_nz_litchfield
 from .eos_se_asia import process_eos_se_asia
 from .gfe import process_gfe
+from .malawi_williams import process_malawi_williams
 
 # This makes a dictionary of the imported processing master functions above
 # to be called by the string version of the function
 fn_dict = {}
+fn_dict['process_malawi_williams'] = process_malawi_williams
 fn_dict['process_aus'] = process_aus
 fn_dict['process_ucerf3'] = process_ucerf3
 fn_dict['process_ata'] = process_ata
